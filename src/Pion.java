@@ -1,4 +1,5 @@
 public class Pion {
+    private int id;
     private int couleur;
     private int colonne;
     private int ligne;
@@ -11,6 +12,10 @@ public class Pion {
         this.ligne = ligne;
         this.dame = false;
         this.vivant = true;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getCouleur(){
@@ -31,6 +36,10 @@ public class Pion {
 
     public boolean isVivant() {
         return vivant;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setCouleur(int couleur) {
