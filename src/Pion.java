@@ -6,7 +6,7 @@ public class Pion {
     private boolean vivant;
     private boolean dame;
 
-    public Pion(final int couleur, final int colonne, final int ligne){
+    public Pion(final int couleur,  int colonne,  int ligne){
         this.couleur = couleur;
         this.colonne = colonne;
         this.ligne = ligne;
