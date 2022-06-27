@@ -1,10 +1,25 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
     private List<Pion> pionList;
-    private List<Joueur> joueurList;
+    private Joueur joueur1, joueur2;
+
+    public static final int VIDE = 0,
+                            NOIR = 1,
+                            DAME_NOIRE = 2,
+                            BLANC = 3,
+                            DAME_BLANCHE = 4;
+
+    public int[][] plateau; // le plateau est un tableau à 2 dimensions plateau[ligne][colonne]
 
     public Model(){
+
+        plateau = new int[10][10];
+        creationPlateau();
+
+        pionList = new ArrayList<Pion>();
+
         //Pion blanc
         Pion p = new Pion(1, 1, 1);
         this.pionList.add(p);
@@ -89,12 +104,55 @@ public class Model {
         p = new Pion(2, 10 , 10);
         this.pionList.add(p);
 
-
         //Joueurs
-        Joueur j = new Joueur(1, "joueur 1");
-        this.joueurList.add(j);
-        j = new Joueur(2, "joueur 2");
-        this.joueurList.add(j);
+        joueur1 = new Joueur(1, "pseudo 1");
+        joueur2 = new Joueur(2, "pseudo 2");
+    }
+
+    public void creationPlateau() {
+        for (int ligne = 0; ligne < 8; ligne++) {
+            for(int colonne = 0; colonne < 8; colonne++) {
+                if(ligne % 2 == colonne % 2) {
+                    if (ligne < 3)
+                        plateau[ligne][colonne] = NOIR;
+                    else if(ligne >  4)
+                        plateau[ligne][colonne] = BLANC;
+                    else
+                        plateau[ligne][colonne] = VIDE;
+
+                } else {
+                    plateau[ligne][colonne] = VIDE;
+                }
+            }
+        }
+    }
+
+    public String getPseudoJoueur1() {
+        return joueur1.getPseudo();
+    }
+
+    public String getPseudoJoueur2() {
+        return joueur2.getPseudo();
+    }
+
+    public Joueur getJoueur1() {
+        return joueur1;
+    }
+
+    public Joueur getJoueur2() {
+        return joueur2;
+    }
+
+    public void setPseudoJoueur1(String pseudo) {
+        getJoueur1().setPseudo(pseudo);
+    }
+
+    public void setPseudoJoueur2(String pseudo) {
+        getJoueur2().setPseudo(pseudo);
+    }
+
+    public int pieceCourante(int ligne, int colonne) {
+        return plateau[ligne][colonne];
     }
 
     public List<Pion> getPionList(){
@@ -104,10 +162,10 @@ public class Model {
     public Pion getPion(int index){
         return (Pion)this.pionList.get(index);
     }
-
+/*
     public List<Joueur> getJoueurList() {
         return joueurList;
     }
-
+*/
 
 }
