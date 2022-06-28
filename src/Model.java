@@ -159,6 +159,31 @@ public class Model {
         return this.pionList;
     }
 
+    public List<Pion> getPionsCouleur(int couleur){
+
+        List<Pion> listPions = this.pionList;
+        List<Pion> listPionsCouleur = null;
+        for (Pion p: listPions) {
+            if(p.getCouleur() == couleur){
+                listPionsCouleur.add(p);
+            }
+        }
+        return listPionsCouleur;
+    }
+
+    public int nbrPionCouleur(int couleur){
+        int nbr = 0;
+        for (int i = 0 ; i<this.pionList.size(); i++){
+            Pion pion = getPion(i);
+            if(pion.isVivant()){
+                if (pion.getCouleur() == couleur){
+                    nbr ++;
+                }
+            }
+        }
+        return nbr;
+    }
+
     public Pion getPion(int index){
         return (Pion)this.pionList.get(index);
     }

@@ -6,6 +6,97 @@ import java.awt.event.MouseListener;
 // Vue
 public class Jeu extends JPanel implements MouseListener {
 
+    Model plateauState;
+    boolean jeuEnCours;
+    int joueurCourant;
+    JLabel infosTour, nomJoueur1, nomJoueur2, nbrPionJoueur1, nbrPionJoueur2;
+
+    public Jeu(Model model) {
+
+        plateauState = model;
+
+        GridLayout grid = new GridLayout(10, 10);
+        JPanel plateau = new JPanel();
+        plateau.setLayout(grid);
+        plateau.setSize(50, 50);
+        plateau.setLocation(0, 100);
+
+        for(int colonne=0; colonne<10;colonne++) {
+            for(int ligne=0; ligne<10;ligne++){
+                if((colonne%2 == 0 && ligne%2 == 0) || (colonne%2 != 0 && ligne%2 != 0)) {
+                    Case c = new Case(1, ligne, colonne);
+                    plateau.add(c);
+                }
+                else{
+                    Case c = new Case(2, ligne, colonne);
+                    plateau.add(c);
+                }
+            }
+        }
+
+
+
+        JFrame jeu = new JFrame("Dames");
+        jeu.setTitle("Jeu de dames");
+        jeu.setSize(500, 600);
+
+
+        GridLayout gridHeader = new GridLayout(1, 10);
+        JPanel panelHeader = new JPanel();
+        panelHeader.setLayout(gridHeader);
+        panelHeader.setVisible(true);
+        panelHeader.setSize(500, 100);
+
+        nomJoueur1 = new JLabel(plateauState.getPseudoJoueur1());
+        nomJoueur1.setLocation(10, 10);
+        nomJoueur1.setBackground(Color.cyan);
+        panelHeader.add(nomJoueur1);
+
+        nbrPionJoueur1 = new JLabel(String.valueOf(plateauState.nbrPionCouleur(1))+" pions");
+        nbrPionJoueur1.setLocation(50, 10);
+        nbrPionJoueur1.setBackground(Color.cyan);
+        panelHeader.add(nbrPionJoueur1);
+
+        nomJoueur2 = new JLabel(plateauState.getPseudoJoueur2());
+        nomJoueur2.setLocation(400, 10);
+        nomJoueur2.setBackground(Color.red);
+        panelHeader.add(nomJoueur2);
+
+        nbrPionJoueur2 = new JLabel(String.valueOf(plateauState.nbrPionCouleur(2))+" pions");
+        nbrPionJoueur2.setLocation(450, 10);
+        nbrPionJoueur2.setBackground(Color.red);
+        panelHeader.add(nbrPionJoueur2);
+
+
+        BorderLayout page = new BorderLayout();
+        jeu.setLayout(page);
+        jeu.add(panelHeader, BorderLayout.PAGE_START);
+        jeu.add(plateau, BorderLayout.CENTER);
+
+
+
+
+        jeu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jeu.setVisible(true);
+
+        demarrage();
+
+    }
+
+    public void demarrage() {
+        jeuEnCours = true;
+        joueurCourant = Model.BLANC;
+    }
+
+    public Case getCase(int index){
+        return (Case) getComponent(index);
+    }
+
+    public void ajoutPionBleu(){
+        this.plateauState.getPionsCouleur(1);
+
+    }
+    /*
     JLabel infos;
     Model plateauState;
 
@@ -14,7 +105,7 @@ public class Jeu extends JPanel implements MouseListener {
     boolean jeuEnCours;
     int joueurCourant;
 
-    private JLabel joueur1, joueur2;
+    private JLabel nomJoueur1, nomJoueur2, nbrPionJoueur1, nbrPionJoueur2;
 
     int ligneCourante, colonneCourante;
 
@@ -27,9 +118,11 @@ public class Jeu extends JPanel implements MouseListener {
         addMouseListener(this);
         JFrame game = new JFrame("Checkers");
 
-        joueur1 = new JLabel(plateauState.getPseudoJoueur1());
-        joueur2 = new JLabel(plateauState.getPseudoJoueur2());
+        nomJoueur1 = new JLabel(plateauState.getPseudoJoueur1());
+        nomJoueur2 = new JLabel(plateauState.getPseudoJoueur2());
 
+        nbrPionJoueur1 = new JLabel(String.valueOf(plateauState.nbrPionCouleur(1)));
+        nbrPionJoueur2 = new JLabel(String.valueOf(plateauState.nbrPionCouleur(2)));
 
         JPanel plateau = new JPanel();
         plateau.setLayout(grid);
@@ -48,14 +141,23 @@ public class Jeu extends JPanel implements MouseListener {
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
         game.setTitle("Jeu de dame");
-        game.setSize(400, 400);
-        this.setBackground(Color.decode("#049304"));
+        game.setSize(700, 900);
+        this.setBackground(Color.decode("#400400"));
         this.setBounds(20, 20, 244, 244);
 
+        JPanel panelHeader = new JPanel();
+        nomJoueur1.setLocation(10, 10);
+        panelHeader.add(nomJoueur1);
+        nbrPionJoueur1.setLocation(50, 10);
+        panelHeader.add(nbrPionJoueur1);
+        nomJoueur2.setLocation(400, 10);
+        panelHeader.add(nomJoueur2);
+        nbrPionJoueur2.setLocation(450, 10);
+        panelHeader.add(nbrPionJoueur2);
+
+        panelPrincipal.add(panelHeader);
         panelPrincipal.add(this);
 
-        panelPrincipal.add(joueur1);
-        panelPrincipal.add(joueur2);
         infos = new JLabel("C'est au joueur blanc de commencer");
         panelPrincipal.add(infos);
 
@@ -123,6 +225,8 @@ public class Jeu extends JPanel implements MouseListener {
                 }
             }
         }
+        */
+
 /*
         if(jeuEnCours) {
             g.setColor(Color.CYAN);
@@ -145,7 +249,7 @@ public class Jeu extends JPanel implements MouseListener {
                 }
             }
         }*/
-    }
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
