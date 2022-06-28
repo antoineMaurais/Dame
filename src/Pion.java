@@ -61,4 +61,6 @@ public class Pion {
     public void setVivant(boolean vivant) {
         this.vivant = vivant;
     }
+
+
 }

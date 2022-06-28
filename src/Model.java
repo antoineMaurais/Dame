@@ -91,7 +91,7 @@ public class Model {
         this.pionList.add(p);
         p = new Pion(2, 7 , 9);
         this.pionList.add(p);
-        p = new Pion(2, 9 , 10);
+        p = new Pion(2, 9 , 9);
         this.pionList.add(p);
         p = new Pion(2, 2 , 10);
         this.pionList.add(p);
@@ -99,7 +99,7 @@ public class Model {
         this.pionList.add(p);
         p = new Pion(2, 6 , 10);
         this.pionList.add(p);
-        p = new Pion(2, 8 , 10);
+       p = new Pion(2, 8 , 10);
         this.pionList.add(p);
         p = new Pion(2, 10 , 10);
         this.pionList.add(p);
@@ -162,7 +162,7 @@ public class Model {
     public List<Pion> getPionsCouleur(int couleur){
 
         List<Pion> listPions = this.pionList;
-        List<Pion> listPionsCouleur = null;
+        List<Pion> listPionsCouleur = new ArrayList<Pion>();
         for (Pion p: listPions) {
             if(p.getCouleur() == couleur){
                 listPionsCouleur.add(p);

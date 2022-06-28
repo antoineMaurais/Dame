@@ -2,18 +2,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 // Vue
 public class Jeu extends JPanel implements MouseListener {
 
     Model plateauState;
+    Controller controller;
     boolean jeuEnCours;
+
+    List<Pion> pionsBleu = new ArrayList<Pion>();
+    List<Pion> pionsRouge = new ArrayList<Pion>();
     int joueurCourant;
     JLabel infosTour, nomJoueur1, nomJoueur2, nbrPionJoueur1, nbrPionJoueur2;
 
     public Jeu(Model model) {
 
         plateauState = model;
+        controller = new Controller(plateauState);
 
         GridLayout grid = new GridLayout(10, 10);
         JPanel plateau = new JPanel();
@@ -21,16 +28,37 @@ public class Jeu extends JPanel implements MouseListener {
         plateau.setSize(50, 50);
         plateau.setLocation(0, 100);
 
-        for(int colonne=0; colonne<10;colonne++) {
-            for(int ligne=0; ligne<10;ligne++){
+        pionsBleu = plateauState.getPionsCouleur(1);
+        pionsRouge = plateauState.getPionsCouleur(2);
+
+
+        for(int colonne=1; colonne<11;colonne++) {
+            for(int ligne=1; ligne<11;ligne++){
                 if((colonne%2 == 0 && ligne%2 == 0) || (colonne%2 != 0 && ligne%2 != 0)) {
                     Case c = new Case(1, ligne, colonne);
 
-                    c.add(new Button("Test"));
+                    for (Pion p: pionsBleu) {
+                        if(p.getLigne() == ligne && p.getColonne() == colonne) {
+                            JButton button = ajouterPion(Color.blue, p);
+                            c.add(button);
+                        }
+                    }
+
+                    for (Pion p: pionsRouge) {
+                        if(p.getLigne() == ligne && p.getColonne() == colonne) {
+                            JButton button = ajouterPion(Color.red, p);
+                            c.add(button);
+                        }
+                    }
+                    //c.add(new Button("Test"));
+
+                    c.addMouseListener(new EcouteurCase(c, this.controller));
                     plateau.add(c);
                 }
                 else{
+
                     Case c = new Case(2, ligne, colonne);
+                    c.addMouseListener(new EcouteurCase(c, this.controller));
                     plateau.add(c);
                 }
             }
@@ -85,6 +113,13 @@ public class Jeu extends JPanel implements MouseListener {
 
     }
 
+    private JButton ajouterPion(Color couleur, Pion pion){
+        JButton button = new RoundButton();
+        button.setBackground(couleur);
+        button.addMouseListener(new EcouteurPion(pion, this.controller));
+        return button;
+    }
+
     public void demarrage() {
         jeuEnCours = true;
         joueurCourant = Model.BLANC;
@@ -96,7 +131,6 @@ public class Jeu extends JPanel implements MouseListener {
 
     public void ajoutPionBleu(){
         this.plateauState.getPionsCouleur(1);
-
     }
     /*
     JLabel infos;

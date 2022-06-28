@@ -22,4 +22,14 @@ public class Case extends JPanel {
             setBackground(Color.BLACK);
         }
     }
+
+    public int getColonne() {
+        return this.colonne;
+    }
+
+    public int getLigne() {
+        return this.ligne;
+    }
+
+
 }
