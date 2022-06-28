@@ -25,6 +25,8 @@ public class Jeu extends JPanel implements MouseListener {
             for(int ligne=0; ligne<10;ligne++){
                 if((colonne%2 == 0 && ligne%2 == 0) || (colonne%2 != 0 && ligne%2 != 0)) {
                     Case c = new Case(1, ligne, colonne);
+
+                    c.add(new Button("Test"));
                     plateau.add(c);
                 }
                 else{
