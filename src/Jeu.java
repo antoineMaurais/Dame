@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Vue
-public class Jeu extends JPanel implements MouseListener {
+public class Jeu extends JFrame implements MouseListener {
 
     Model plateauState;
     Controller controller;
@@ -16,13 +16,22 @@ public class Jeu extends JPanel implements MouseListener {
     List<Pion> pionsRouge = new ArrayList<Pion>();
     List<Case> possibiliteDeplacement = new ArrayList<Case>();
     int joueurCourant;
-    JLabel infosTour, nomJoueur1, nomJoueur2, nbrPionJoueur1, nbrPionJoueur2;
+    JLabel infosTour, nomJoueur1, nomJoueur2, nbrPionJoueur1, nbrPionJoueur2, titre;
 
-    public Jeu(Model model) {
+    /*
+    public Jeu(Controller controller){
+        this.controller = controller;
+        this.setTitle("Jeu de dames");
+        this.setSize(500, 600);
+        this.setResizable(true);
+        this.setLayout(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
+        this.construireJeu();
+    }
 
-        plateauState = model;
-        controller = new Controller(plateauState);
-        possibiliteDeplacement = plateauState.getCasePossDep();
+    private void construireJeu(){
+        JFrame jeu = new JFrame("Dames");
 
         GridLayout grid = new GridLayout(10, 10);
         JPanel plateau = new JPanel();
@@ -30,8 +39,131 @@ public class Jeu extends JPanel implements MouseListener {
         plateau.setSize(50, 50);
         plateau.setLocation(0, 100);
 
-        pionsBleu = plateauState.getPionsCouleur(1);
-        pionsRouge = plateauState.getPionsCouleur(2);
+        plateauState = new Model();
+
+        possibiliteDeplacement = controller.getCasePossDep();
+        pionsBleu = controller.getPionsCouleur(1);
+        pionsRouge = controller.getPionsCouleur(2);
+
+        for(int ligne=1; ligne<11;ligne++) {
+            for(int colonne=1; colonne<11;colonne++){
+                if((colonne%2 == 0 && ligne%2 == 0) || (colonne%2 != 0 && ligne%2 != 0)) {
+                    Case c = new Case(1, ligne, colonne);
+
+                    for (Pion p: pionsBleu) {
+                        if(p.getLigne() == ligne && p.getColonne() == colonne) {
+                            JButton button = ajouterPion(Color.blue, p);
+                            c.add(button);
+                        }
+                    }
+
+                    for (Pion p: pionsRouge) {
+                        if(p.getLigne() == ligne && p.getColonne() == colonne) {
+                            JButton button = ajouterPion(Color.red, p);
+                            c.add(button);
+                        }
+                    }
+                    for (Case cPossDep : possibiliteDeplacement){
+
+                        Case cDispo = new Case(3, cPossDep.ligne, cPossDep.colonne);
+                        cDispo.addMouseListener(new EcouteurCase(cDispo, this.controller));
+                        plateau.add(cDispo);
+                    }
+                    //c.add(new Button("Test"));
+
+                    c.addMouseListener(new EcouteurCase(c, this.controller));
+                    plateau.add(c);
+
+                } else{
+
+                    Case c = new Case(2, ligne, colonne);
+                    c.addMouseListener(new EcouteurCase(c, this.controller));
+                    plateau.add(c);
+                }
+            }
+        }
+
+        GridLayout gridHeader = new GridLayout(1, 10);
+        JPanel panelHeader = new JPanel();
+        panelHeader.setLayout(gridHeader);
+        panelHeader.setVisible(true);
+        panelHeader.setSize(500, 100);
+
+        nomJoueur1 = new JLabel(controller.getPseudoJoueur1());
+        nomJoueur1.setLocation(10, 10);
+        nomJoueur1.setBackground(Color.BLUE);
+        nomJoueur1.setForeground(Color.BLUE);
+        panelHeader.add(nomJoueur1);
+
+        nbrPionJoueur1 = new JLabel(String.valueOf(controller.nbrPionCouleur(1))+" pions");
+        nbrPionJoueur1.setLocation(50, 10);
+        nbrPionJoueur1.setBackground(Color.BLUE);
+        nbrPionJoueur1.setForeground(Color.BLUE);
+        panelHeader.add(nbrPionJoueur1);
+
+        titre = new JLabel("Jeu de dames");
+        titre.setForeground(Color.BLACK);
+        panelHeader.add(titre);
+
+        nomJoueur2 = new JLabel(controller.getPseudoJoueur2());
+        nomJoueur2.setLocation(400, 10);
+        nomJoueur2.setBackground(Color.red);
+        nomJoueur2.setForeground(Color.red);
+        panelHeader.add(nomJoueur2);
+
+        nbrPionJoueur2 = new JLabel(String.valueOf(controller.nbrPionCouleur(2))+" pions");
+        nbrPionJoueur2.setLocation(450, 10);
+        nbrPionJoueur2.setBackground(Color.red);
+        nbrPionJoueur2.setForeground(Color.red);
+        panelHeader.add(nbrPionJoueur2);
+        panelHeader.setBackground(Color.YELLOW);
+
+
+
+
+        JPanel panelFooter = new JPanel();
+        panelFooter.setVisible(true);
+        panelFooter.setSize(500, 100);
+
+
+        if(joueurCourant == 6){
+            infosTour = new JLabel("C'est au joueur bleu de jouer");
+        }
+        else{
+            infosTour = new JLabel("C'est au joueur rouge de jouer");
+        }
+        panelFooter.add(infosTour);
+        panelFooter.setBackground(Color.YELLOW);
+
+        BorderLayout page = new BorderLayout();
+        jeu.setLayout(page);
+        jeu.add(panelHeader, BorderLayout.PAGE_START);
+        jeu.add(plateau, BorderLayout.CENTER);
+        jeu.add(panelFooter,BorderLayout.PAGE_END);
+
+
+        demarrage();
+
+
+    }
+
+
+     */
+
+    public Jeu(Model model) {
+
+        plateauState = model;
+        controller = new Controller(plateauState);
+        possibiliteDeplacement = controller.getCasePossDep();
+
+        GridLayout grid = new GridLayout(10, 10);
+        JPanel plateau = new JPanel();
+        plateau.setLayout(grid);
+        plateau.setSize(50, 50);
+        plateau.setLocation(0, 100);
+
+        pionsBleu = controller.getPionsCouleur(1);
+        pionsRouge = controller.getPionsCouleur(2);
 
 
         for(int ligne=1; ligne<11;ligne++) {
@@ -85,32 +217,37 @@ public class Jeu extends JPanel implements MouseListener {
         panelHeader.setVisible(true);
         panelHeader.setSize(500, 100);
 
-        nomJoueur1 = new JLabel(plateauState.getPseudoJoueur1());
+        nomJoueur1 = new JLabel(controller.getPseudoJoueur1());
         nomJoueur1.setLocation(10, 10);
         nomJoueur1.setBackground(Color.BLUE);
         nomJoueur1.setForeground(Color.BLUE);
-
         panelHeader.add(nomJoueur1);
 
-        nbrPionJoueur1 = new JLabel(String.valueOf(plateauState.nbrPionCouleur(1))+" pions");
+        nbrPionJoueur1 = new JLabel(String.valueOf(controller.nbrPionCouleur(1))+" pions");
         nbrPionJoueur1.setLocation(50, 10);
         nbrPionJoueur1.setBackground(Color.BLUE);
         nbrPionJoueur1.setForeground(Color.BLUE);
-
         panelHeader.add(nbrPionJoueur1);
 
-        nomJoueur2 = new JLabel(plateauState.getPseudoJoueur2());
+        titre = new JLabel("Jeu de dames");
+        titre.setForeground(Color.BLACK);
+        panelHeader.add(titre);
+
+        nomJoueur2 = new JLabel(controller.getPseudoJoueur2());
         nomJoueur2.setLocation(400, 10);
         nomJoueur2.setBackground(Color.red);
         nomJoueur2.setForeground(Color.red);
         panelHeader.add(nomJoueur2);
 
-        nbrPionJoueur2 = new JLabel(String.valueOf(plateauState.nbrPionCouleur(2))+" pions");
+        nbrPionJoueur2 = new JLabel(String.valueOf(controller.nbrPionCouleur(2))+" pions");
         nbrPionJoueur2.setLocation(450, 10);
         nbrPionJoueur2.setBackground(Color.red);
         nbrPionJoueur2.setForeground(Color.red);
         panelHeader.add(nbrPionJoueur2);
         panelHeader.setBackground(Color.YELLOW);
+
+
+
 
         JPanel panelFooter = new JPanel();
         panelFooter.setVisible(true);
@@ -141,6 +278,8 @@ public class Jeu extends JPanel implements MouseListener {
         demarrage();
 
     }
+
+
 
 
 

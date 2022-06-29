@@ -20,6 +20,8 @@ public class EcouteurPion implements MouseListener {
     public void mousePressed(MouseEvent e) {
         System.out.println(pion.getCouleur());
         controller.afficherPossibilites(pion);
+        // TODO je pense faut rappeler pour reconstruire la fenetre avec les nouveaux composants
+        //controller.setVueJeu(controller.);
     }
 
     @Override

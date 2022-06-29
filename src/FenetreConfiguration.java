@@ -54,10 +54,10 @@ public class FenetreConfiguration extends JFrame implements ActionListener {
         model = new Model();
 
         labelPseudoJoueur1 = new JLabel("Pseudo joueur 1 :");
-        textFieldPseudoJoueur1 = new JTextField(model.getPseudoJoueur1());
+        textFieldPseudoJoueur1 = new JTextField(controller.getPseudoJoueur1());
 
         labelPseudoJoueur2 = new JLabel("Pseudo joueur 2 :");
-        textFieldPseudoJoueur2 = new JTextField(model.getPseudoJoueur2());
+        textFieldPseudoJoueur2 = new JTextField(controller.getPseudoJoueur2());
 
 
         panel.add(labelPseudoJoueur1);
@@ -69,22 +69,23 @@ public class FenetreConfiguration extends JFrame implements ActionListener {
         this.setContentPane(panel);
     }
 
-    public String getPseudo1() {
-        return this.pseudo1;
-    }
 
-    public String getPseudo2() {
-        return this.pseudo2;
-    }
 
     public void actionPerformed(ActionEvent e) {
 
         model = new Model();
+        controller = new Controller(model);
 
         System.out.println(textFieldPseudoJoueur1.getText());
-        model.setPseudoJoueur1(textFieldPseudoJoueur1.getText());
-        model.setPseudoJoueur2(textFieldPseudoJoueur2.getText());
+        controller.setPseudoJoueur1(textFieldPseudoJoueur1.getText());
+        controller.setPseudoJoueur2(textFieldPseudoJoueur2.getText());
         frame.dispose();
+        /*
+        Jeu jeu = new Jeu(controller);
+        jeu.setVisible(true);
+        controller.setVueJeu(jeu);
+
+         */
         jeu = new Jeu(model);
     }
 }

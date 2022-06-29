@@ -19,6 +19,35 @@ public class Controller {
     public void setVueJeu(Jeu vueJeu){
         this.vueJeu=vueJeu;
     }
+
+    public List<Pion> getPionsCouleur(int couleur){
+        return this.model.getPionsCouleur(couleur);
+    }
+
+    public List<Case> getCasePossDep(){
+        return this.model.getCasePossDep();
+    }
+
+    public String getPseudoJoueur1() {
+        return this.model.getPseudoJoueur1();
+    }
+
+    public String getPseudoJoueur2() {
+        return this.model.getPseudoJoueur2();
+    }
+
+    public int nbrPionCouleur(int couleur){
+        return this.model.nbrPionCouleur(couleur);
+    }
+
+    public void setPseudoJoueur1(String pseudo) {
+        this.model.setPseudoJoueur1(pseudo);
+    }
+
+    public void setPseudoJoueur2(String pseudo) {
+        this.model.setPseudoJoueur2(pseudo);
+    }
+
     public void saveJoueur(Joueur joueur1, Joueur joueur2){
         model.setPseudoJoueur1(joueur1.getPseudo());
         model.setPseudoJoueur2(joueur2.getPseudo());
@@ -33,7 +62,7 @@ public class Controller {
         System.out.println("ligne : " + pion.getLigne());
 
         if(pion.isDame() == true){
-
+            //TODO gerer le cas de la dame
         } else{
             if(pion.getCouleur() == 1){
                 // On regarde si il y a des pions bleus en diagonale
@@ -61,6 +90,7 @@ public class Controller {
 
                 List<Pion> pionsRouges= model.getPionsCouleur(2);
                 for (Pion pr: pionsRouges){
+                    //TODO faire le cas ou il y a plusieurs "saut" possible
                     // On regarde si il y a un pions rouges en diagonale
                     if(pion.getColonne()-1 == pr.getColonne() && pion.getLigne()+1 == pr.getLigne()) {
                         // On regarde si il n'y a pas de pions derrières
@@ -169,6 +199,8 @@ public class Controller {
                     }
                 }
             }
+
+            model.setCasePossDep(possibiliteDeplacement);
 
             if(possibiliteDeplacement.size()==0){
                 System.out.print("deplacement pas possible :");

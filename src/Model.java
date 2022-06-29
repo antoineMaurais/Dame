@@ -165,6 +165,10 @@ public class Model {
         return this.possibiliteDeplacement;
     }
 
+    public void setCasePossDep(List<Case> possibiliteDeplacement){
+        this.possibiliteDeplacement = possibiliteDeplacement;
+    }
+
     public boolean isPossDep(){
         return (!this.possibiliteDeplacement.isEmpty());
     }
