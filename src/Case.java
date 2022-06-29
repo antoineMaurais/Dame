@@ -18,8 +18,10 @@ public class Case extends JPanel {
     private void initBackground(int couleur){
         if(couleur == 1){
             setBackground(Color.WHITE);
-        } else {
+        } else if(couleur ==2 ) {
             setBackground(Color.BLACK);
+        } else {
+            setBackground(Color.LIGHT_GRAY);
         }
     }
 

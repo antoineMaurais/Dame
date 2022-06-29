@@ -14,6 +14,7 @@ public class Jeu extends JPanel implements MouseListener {
 
     List<Pion> pionsBleu = new ArrayList<Pion>();
     List<Pion> pionsRouge = new ArrayList<Pion>();
+    List<Case> possibiliteDeplacement = new ArrayList<Case>();
     int joueurCourant;
     JLabel infosTour, nomJoueur1, nomJoueur2, nbrPionJoueur1, nbrPionJoueur2;
 
@@ -21,6 +22,7 @@ public class Jeu extends JPanel implements MouseListener {
 
         plateauState = model;
         controller = new Controller(plateauState);
+        possibiliteDeplacement = plateauState.getCasePossDep();
 
         GridLayout grid = new GridLayout(10, 10);
         JPanel plateau = new JPanel();
@@ -32,8 +34,8 @@ public class Jeu extends JPanel implements MouseListener {
         pionsRouge = plateauState.getPionsCouleur(2);
 
 
-        for(int colonne=1; colonne<11;colonne++) {
-            for(int ligne=1; ligne<11;ligne++){
+        for(int ligne=1; ligne<11;ligne++) {
+            for(int colonne=1; colonne<11;colonne++){
                 if((colonne%2 == 0 && ligne%2 == 0) || (colonne%2 != 0 && ligne%2 != 0)) {
                     Case c = new Case(1, ligne, colonne);
 
@@ -50,12 +52,18 @@ public class Jeu extends JPanel implements MouseListener {
                             c.add(button);
                         }
                     }
+                    for (Case cPossDep : possibiliteDeplacement){
+
+                        Case cDispo = new Case(3, cPossDep.ligne, cPossDep.colonne);
+                        cDispo.addMouseListener(new EcouteurCase(cDispo, this.controller));
+                        plateau.add(cDispo);
+                    }
                     //c.add(new Button("Test"));
 
                     c.addMouseListener(new EcouteurCase(c, this.controller));
                     plateau.add(c);
-                }
-                else{
+
+                } else{
 
                     Case c = new Case(2, ligne, colonne);
                     c.addMouseListener(new EcouteurCase(c, this.controller));
@@ -112,6 +120,10 @@ public class Jeu extends JPanel implements MouseListener {
         demarrage();
 
     }
+
+
+
+
 
     private JButton ajouterPion(Color couleur, Pion pion){
         JButton button = new RoundButton();

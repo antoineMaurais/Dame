@@ -5,6 +5,9 @@ public class Model {
     private List<Pion> pionList;
     private Joueur joueur1, joueur2;
 
+    private List<Case> possibiliteDeplacement;
+
+
     public static final int VIDE = 0,
                             NOIR = 1,
                             DAME_NOIRE = 2,
@@ -20,6 +23,7 @@ public class Model {
 
         pionList = new ArrayList<Pion>();
 
+        possibiliteDeplacement = new ArrayList<Case>();
         //Pion blanc
         Pion p = new Pion(1, 1, 1);
         this.pionList.add(p);
@@ -155,6 +159,13 @@ public class Model {
         return plateau[ligne][colonne];
     }
 
+    public List<Case> getCasePossDep(){
+        return this.possibiliteDeplacement;
+    }
+
+    public boolean isPossDep(){
+        return (!this.possibiliteDeplacement.isEmpty());
+    }
     public List<Pion> getPionList(){
         return this.pionList;
     }
@@ -164,8 +175,11 @@ public class Model {
         List<Pion> listPions = this.pionList;
         List<Pion> listPionsCouleur = new ArrayList<Pion>();
         for (Pion p: listPions) {
-            if(p.getCouleur() == couleur){
-                listPionsCouleur.add(p);
+            if(p.isVivant() == true){
+                if(p.getCouleur() == couleur){
+                    listPionsCouleur.add(p);
+                }
+
             }
         }
         return listPionsCouleur;

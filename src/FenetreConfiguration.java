@@ -24,8 +24,9 @@ public class FenetreConfiguration extends JFrame implements ActionListener {
     private String pseudo2;
 
 
-    public FenetreConfiguration(String titre)
+    public FenetreConfiguration(String titre, Controller controller)
     {
+        this.controller = controller;
         this.setTitle(titre);
         this.setResizable(true);
         this.setLocationRelativeTo(null);
