@@ -5,52 +5,181 @@ public class Controller {
     private Model model;
     private Joueur joueur;
     private Pion pion;
+    private Case aCase;
     private FenetreConfiguration vueConfig;
+    private Jeu vueJeu;
     private List<Case> possibiliteDeplacement = new ArrayList<Case>();
 
     public Controller(final Model model){this.model = model;}
 
-    public void saveJoueur(){
+    public void setVueConfig(FenetreConfiguration vueConfig){
+        this.vueConfig=vueConfig;
+    }
 
+    public void setVueJeu(Jeu vueJeu){
+        this.vueJeu=vueJeu;
+    }
+    public void saveJoueur(Joueur joueur1, Joueur joueur2){
+        model.setPseudoJoueur1(joueur1.getPseudo());
+        model.setPseudoJoueur2(joueur2.getPseudo());
+        this.vueConfig.dispose();
     }
 
     public void afficherPossibilites(Pion pion) {
 
-        // TODO : Verifier si les cases en diagonale sont vides ou non
-        // Parcourir tous les pions et si il n'y en a pas aux coordonnées des diagonales alors on peut proposer au pion d'avancer sur les deux diagonales
+        possibiliteDeplacement = model.getCasePossDep();
+        System.out.println("Coordonnées : \n");
+        System.out.println("colonne : " + pion.getColonne());
+        System.out.println("ligne : " + pion.getLigne());
 
-        // pions bleu
-        if(pion.getCouleur() == 1) {
-            System.out.println("Coordonnées : \n");
-            System.out.println("colonne : " + pion.getColonne());
-            System.out.println("ligne : " + pion.getLigne());
+        if(pion.isDame() == true){
+
+        } else{
+            if(pion.getCouleur() == 1){
+                // On regarde si il y a des pions bleus en diagonale
+                boolean indispoDiago1 = false;
+                boolean indispoDiago2 = false;
+                List<Pion> pionsBleus = model.getPionsCouleur(1);
+                for(Pion p: pionsBleus) {
+                    // SI LE TABLEAU possibiliteDeplacement est VIDE, cela veut dire qu'il y a des pions bleus en diagonale
 
 
-            List<Pion> pionsBleu = new ArrayList<Pion>();
+                    if(pion.getColonne()-1 == p.getColonne() && pion.getLigne()+1 == p.getLigne()) {
+                        indispoDiago1 = true;
+                    } else if (pion.getColonne()+1 == p.getColonne() && pion.getLigne()+1 == p.getLigne()) {
+                        indispoDiago2 = true;
+                    }
+                }
+                if(indispoDiago1 == false){
+                    possibiliteDeplacement.add(new Case(1, pion.getLigne()+1, pion.getColonne()-1));
+                    indispoDiago1 = true;
+                }
+                if(indispoDiago2 == false){
+                    possibiliteDeplacement.add(new Case(1, pion.getLigne()+1, pion.getColonne()+1));
+                    indispoDiago2 = true;
+                }
 
-            pionsBleu = model.getPionsCouleur(1);
-            for(Pion p: pionsBleu) {
-                // SI LE TABLEAU possibiliteDeplacement est VIDE, cela veut dire qu'il n'y pas de pion bleu en diagonale
-                if(pion.getColonne()-1 == p.getColonne() && pion.getLigne()+1 == p.getLigne()) {
-                    possibiliteDeplacement.add(new Case(1, p.getLigne(), p.getColonne()));
-                    System.out.println(" oui");
-                } else if (pion.getColonne()+1 == p.getColonne() && pion.getLigne()+1 == p.getLigne()) {
-                    possibiliteDeplacement.add(new Case(1, p.getLigne(), p.getColonne()));
+                List<Pion> pionsRouges= model.getPionsCouleur(2);
+                for (Pion pr: pionsRouges){
+                    // On regarde si il y a un pions rouges en diagonale
+                    if(pion.getColonne()-1 == pr.getColonne() && pion.getLigne()+1 == pr.getLigne()) {
+                        // On regarde si il n'y a pas de pions derrières
+                        List<Pion> pionsList = model.getPionList();
+                        for(Pion p : pionsList){
+                            if(pion.getColonne()-2 == p.getColonne() && pion.getLigne()+2 == p.getLigne()){
+                                indispoDiago1 = true;
+                            } else if (pion.getColonne() == p.getColonne() && pion.getLigne()+2 == p.getLigne()) {
+                                indispoDiago2 = true;
+                            }
+                        }
+                        if(indispoDiago1 == false){
+                            possibiliteDeplacement.add(new Case(1, pion.getLigne()+2, pion.getColonne()-2));
+                            indispoDiago1 = true;
+                        }
+                        if(indispoDiago2 == false){
+                            possibiliteDeplacement.add(new Case(1, pion.getLigne()+2, pion.getColonne()));
+                            indispoDiago2 = true;
+                        }
+
+                    } else if (pion.getColonne()+1 == pr.getColonne() && pion.getLigne()+1 == pr.getLigne()) {
+                        // On regarde si il n'y a pas de pions derrières
+                        List<Pion> pionsList = model.getPionList();
+                        for(Pion p : pionsList){
+                            if(pion.getColonne()+2 == p.getColonne() && pion.getLigne()+2 == p.getLigne()){
+                                indispoDiago1 = true;
+                            } else if (pion.getColonne() == p.getColonne() && pion.getLigne()+2 == p.getLigne()) {
+                                indispoDiago2 = true;
+                            }
+                        }
+                        if(indispoDiago1 == false){
+                            possibiliteDeplacement.add(new Case(1, pion.getLigne()+2, pion.getColonne()+2));
+                            indispoDiago1 = true;
+                        }
+                        if(indispoDiago2 == false){
+                            possibiliteDeplacement.add(new Case(1, pion.getLigne()+2, pion.getColonne()));
+                            indispoDiago2 = true;
+                        }
+                    }
+                }
+
+            } else{
+                // On regarde si il y a des pions bleus en diagonale
+                boolean indispoDiago1 = false;
+                boolean indispoDiago2 = false;
+                List<Pion> pionsRouges = model.getPionsCouleur(2);
+                for(Pion p: pionsRouges) {
+                    // SI LE TABLEAU possibiliteDeplacement est VIDE, cela veut dire qu'il y a des pions rouges en diagonale
+
+
+                    if(pion.getColonne()-1 == p.getColonne() && pion.getLigne()-1 == p.getLigne()) {
+                        indispoDiago1 = true;
+                    } else if (pion.getColonne()+1 == p.getColonne() && pion.getLigne()-1 == p.getLigne()) {
+                        indispoDiago2 = true;
+                    }
+                }
+                if(indispoDiago1 == false){
+                    possibiliteDeplacement.add(new Case(1, pion.getLigne()-1, pion.getColonne()-1));
+                    indispoDiago1 = true;
+                }
+                if(indispoDiago2 == false){
+                    possibiliteDeplacement.add(new Case(1, pion.getLigne()-1, pion.getColonne()+1));
+                    indispoDiago2 = true;
+                }
+
+                List<Pion> pionsBleus= model.getPionsCouleur(1);
+                for (Pion pb: pionsBleus){
+                    // On regarde si il y a un pions bleus en diagonale
+                    if(pion.getColonne()-1 == pb.getColonne() && pion.getLigne()-1 == pb.getLigne()) {
+                        // On regarde si il n'y a pas de pions derrières
+                        List<Pion> pionsList = model.getPionList();
+                        for(Pion p : pionsList){
+                            if(pion.getColonne()-2 == p.getColonne() && pion.getLigne()-2 == p.getLigne()){
+                                indispoDiago1 = true;
+                            } else if (pion.getColonne() == p.getColonne() && pion.getLigne()-2 == p.getLigne()) {
+                                indispoDiago2 = true;
+                            }
+                        }
+                        if(indispoDiago1 == false){
+                            possibiliteDeplacement.add(new Case(1, pion.getLigne()-2, pion.getColonne()-2));
+                            indispoDiago1 = true;
+                        }
+                        if(indispoDiago2 == false){
+                            possibiliteDeplacement.add(new Case(1, pion.getLigne()-2, pion.getColonne()));
+                            indispoDiago2 = true;
+                        }
+
+                    } else if (pion.getColonne()+1 == pb.getColonne() && pion.getLigne()-1 == pb.getLigne()) {
+                        // On regarde si il n'y a pas de pions derrières
+                        List<Pion> pionsList = model.getPionList();
+                        for(Pion p : pionsList){
+                            if(pion.getColonne()+2 == p.getColonne() && pion.getLigne()-2 == p.getLigne()){
+                                indispoDiago1 = true;
+                            } else if (pion.getColonne() == p.getColonne() && pion.getLigne()-2 == p.getLigne()) {
+                                indispoDiago2 = true;
+                            }
+                        }
+                        if(indispoDiago1 == false){
+                            possibiliteDeplacement.add(new Case(1, pion.getLigne()-2, pion.getColonne()+2));
+                            indispoDiago1 = true;
+                        }
+                        if(indispoDiago2 == false){
+                            possibiliteDeplacement.add(new Case(1, pion.getLigne()-2, pion.getColonne()));
+                            indispoDiago2 = true;
+                        }
+                    }
                 }
             }
-            pion.getColonne();
-            pion.getLigne();
-        } else {
-            // Faire pareil pour les pions rouge
-        }
 
-        // Si il n'y a rien dans le tableau c'est que le pion peut avancer normalement
-        System.out.print("deplacement pas possible :");
-        for(Case c: possibiliteDeplacement) {
-            System.out.println("ligne : " + c.getLigne());
-            System.out.println("colonne : " + c.getColonne());
+            if(possibiliteDeplacement.size()==0){
+                System.out.print("deplacement pas possible :");
+            } else {
+                System.out.print("deplacement possible :");
+                for(Case c: possibiliteDeplacement) {
+                    System.out.println("ligne : " + c.getLigne());
+                    System.out.println("colonne : " + c.getColonne());
+                }
+            }
         }
-
     }
 
 
