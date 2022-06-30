@@ -1,14 +1,18 @@
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class EcouteurCase implements MouseListener {
 
     private Case caseJeu;
+
+    private JPanel plateau;
     private Controller controller;
 
-    public EcouteurCase(Case caseJeu, Controller controller) {
+    public EcouteurCase(Case caseJeu, Controller controller, JPanel plateau) {
         this.caseJeu = caseJeu;
         this.controller = controller;
+        this.plateau = plateau;
     }
 
     @Override
@@ -19,6 +23,7 @@ public class EcouteurCase implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
        // if(caseJeu.isSelectionnee()){
+
             controller.deplacerCase(caseJeu);
        // }
     }

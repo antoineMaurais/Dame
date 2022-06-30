@@ -56,6 +56,7 @@ public class Controller {
 
     public void afficherPossibilites(Pion pion) {
 
+        possibiliteDeplacement = model.resetCasePossDep();
         possibiliteDeplacement = model.getCasePossDep();
         System.out.println("Coordonnées : \n");
         System.out.println("colonne : " + pion.getColonne());
@@ -75,8 +76,10 @@ public class Controller {
 
                     if(pion.getColonne()-1 == p.getColonne() && pion.getLigne()+1 == p.getLigne()) {
                         indispoDiago1 = true;
+                        System.out.println("oui1");
                     } else if (pion.getColonne()+1 == p.getColonne() && pion.getLigne()+1 == p.getLigne()) {
                         indispoDiago2 = true;
+                        System.out.println("oui2");
                     }
                 }
                 if(indispoDiago1 == false){
@@ -87,7 +90,7 @@ public class Controller {
                     possibiliteDeplacement.add(new Case(1, pion.getLigne()+1, pion.getColonne()+1));
                     indispoDiago2 = true;
                 }
-
+/*
                 List<Pion> pionsRouges= model.getPionsCouleur(2);
                 for (Pion pr: pionsRouges){
                     //TODO faire le cas ou il y a plusieurs "saut" possible
@@ -130,10 +133,10 @@ public class Controller {
                             indispoDiago2 = true;
                         }
                     }
-                }
+                }*/
 
             } else{
-                // On regarde si il y a des pions bleus en diagonale
+             /*   // On regarde si il y a des pions rouges en diagonale
                 boolean indispoDiago1 = false;
                 boolean indispoDiago2 = false;
                 List<Pion> pionsRouges = model.getPionsCouleur(2);
@@ -197,20 +200,19 @@ public class Controller {
                             indispoDiago2 = true;
                         }
                     }
-                }
+                } */
             }
-
             model.setCasePossDep(possibiliteDeplacement);
-
-            if(possibiliteDeplacement.size()==0){
+/*
+            if(model.getCasePossDep().size()==0){
                 System.out.print("deplacement pas possible :");
             } else {
                 System.out.print("deplacement possible :");
-                for(Case c: possibiliteDeplacement) {
+                for(Case c: model.getCasePossDep()) {
                     System.out.println("ligne : " + c.getLigne());
                     System.out.println("colonne : " + c.getColonne());
                 }
-            }
+            }*/
         }
     }
 

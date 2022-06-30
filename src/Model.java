@@ -165,6 +165,11 @@ public class Model {
         return this.possibiliteDeplacement;
     }
 
+    public List<Case> resetCasePossDep() {
+        this.possibiliteDeplacement = new ArrayList<Case>();
+        return new ArrayList<Case>();
+    }
+
     public void setCasePossDep(List<Case> possibiliteDeplacement){
         this.possibiliteDeplacement = possibiliteDeplacement;
     }

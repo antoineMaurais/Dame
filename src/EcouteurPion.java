@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -6,9 +7,12 @@ public class EcouteurPion implements MouseListener {
     private Controller controller;
     private Pion pion;
 
-    public EcouteurPion(Pion pion, Controller controller){
+    private JPanel plateau;
+
+    public EcouteurPion(Pion pion, Controller controller, JPanel plateau){
         this.controller = controller;
         this.pion = pion;
+        this.plateau = plateau;
     }
 
     @Override
@@ -18,6 +22,7 @@ public class EcouteurPion implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        this.plateau.updateUI();
         System.out.println(pion.getCouleur());
         controller.afficherPossibilites(pion);
         // TODO je pense faut rappeler pour reconstruire la fenetre avec les nouveaux composants

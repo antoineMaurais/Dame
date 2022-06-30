@@ -12,6 +12,8 @@ public class Jeu extends JFrame implements MouseListener {
     Controller controller;
     boolean jeuEnCours;
 
+    JPanel plateau = new JPanel();
+
     List<Pion> pionsBleu = new ArrayList<Pion>();
     List<Pion> pionsRouge = new ArrayList<Pion>();
     List<Case> possibiliteDeplacement = new ArrayList<Case>();
@@ -154,10 +156,17 @@ public class Jeu extends JFrame implements MouseListener {
 
         plateauState = model;
         controller = new Controller(plateauState);
-        possibiliteDeplacement = controller.getCasePossDep();
-
+        possibiliteDeplacement = model.getCasePossDep();
+        if(model.getCasePossDep().size()==0){
+            System.out.print("deplacement pas possible :");
+        } else {
+            System.out.print("deplacement possible :");
+            for(Case c: model.getCasePossDep()) {
+                System.out.println("ligne : " + c.getLigne());
+                System.out.println("colonne : " + c.getColonne());
+            }
+        }
         GridLayout grid = new GridLayout(10, 10);
-        JPanel plateau = new JPanel();
         plateau.setLayout(grid);
         plateau.setSize(50, 50);
         plateau.setLocation(0, 100);
@@ -185,20 +194,23 @@ public class Jeu extends JFrame implements MouseListener {
                         }
                     }
                     for (Case cPossDep : possibiliteDeplacement){
-
-                        Case cDispo = new Case(3, cPossDep.ligne, cPossDep.colonne);
-                        cDispo.addMouseListener(new EcouteurCase(cDispo, this.controller));
-                        plateau.add(cDispo);
+                        System.out.println(cPossDep.getLigne() + "ok");
+                        if(cPossDep.getLigne() == ligne && cPossDep.getColonne() == colonne) {
+                            System.out.println("ajoute");
+                            c = new Case(3, cPossDep.ligne, cPossDep.colonne);
+                            //cDispo.addMouseListener(new EcouteurCase(cDispo, .controller));
+                            //plateau.add(cDispo);
+                        }
                     }
                     //c.add(new Button("Test"));
 
-                    c.addMouseListener(new EcouteurCase(c, this.controller));
+                    c.addMouseListener(new EcouteurCase(c, this.controller, plateau));
                     plateau.add(c);
 
                 } else{
 
                     Case c = new Case(2, ligne, colonne);
-                    c.addMouseListener(new EcouteurCase(c, this.controller));
+                    c.addMouseListener(new EcouteurCase(c, this.controller, plateau));
                     plateau.add(c);
                 }
             }
@@ -288,7 +300,7 @@ public class Jeu extends JFrame implements MouseListener {
     private JButton ajouterPion(Color couleur, Pion pion){
         JButton button = new RoundButton();
         button.setBackground(couleur);
-        button.addMouseListener(new EcouteurPion(pion, this.controller));
+        button.addMouseListener(new EcouteurPion(pion, this.controller, this.plateau));
         return button;
     }
 
